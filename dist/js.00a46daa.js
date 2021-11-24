@@ -582,10 +582,10 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
-var BASE_URL = 'https://restcountries.com';
+const BASE_URL = 'https://restcountries.com';
 
-var fetchCountries = function fetchCountries(name) {
-  return fetch("".concat(BASE_URL, "/v3.1/name/").concat(name, "?fields=name,capital,population,flags,languages")).then(function (response) {
+const fetchCountries = name => {
+  return fetch(`${BASE_URL}/v3.1/name/${name}?fields=name,capital,population,flags,languages`).then(response => {
     if (!response.ok) {
       return Promise.reject(new Error(error));
     }
@@ -609,43 +609,67 @@ var _apiServices = _interopRequireDefault(require("./service/api-services"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var DEBOUNCE_DELAY = 300;
-var refs = {
+const DEBOUNCE_DELAY = 300;
+const refs = {
   input: document.querySelector('#search-box'),
   list: document.querySelector('.country-list'),
   info: document.querySelector('.country-info')
 };
 
-var createUsersMarkupLi = function createUsersMarkupLi(obj) {
-  var markup = obj.map(function (_ref) {
-    var official = _ref.name.official,
-        svg = _ref.lags.svg;
-    return "<div class =\"js-list\">\n        <div>\n        <img src=\"".concat(svg, "\" alt=\"flag\" width=\"40\" class =\"js-img\">\n        </div>\n        <h1>").concat(official, "</h1>\n        </div>");
-  }).join('');
+const createUsersMarkupLi = obj => {
+  const markup = obj.map(({
+    name: {
+      official
+    },
+    lags: {
+      svg
+    }
+  }) => `<div class ="js-list">
+        <div>
+        <img src="${svg}" alt="flag" width="40" class ="js-img">
+        </div>
+        <h1>${official}</h1>
+        </div>`).join('');
   refs.info.innerHTML = '';
   refs.list.innerHTML = markup;
 };
 
-var createMarkupList = function createMarkupList(dataList) {
+const createMarkupList = dataList => {
   console.log(dataList);
-  var markupList = dataList.map(function (_ref2) {
-    var official = _ref2.name.official,
-        capital = _ref2.capital,
-        population = _ref2.population,
-        svg = _ref2.flags.svg,
-        languages = _ref2.languages;
-    var languagesKey = Object.values(languages).join(',');
-    return "<div class =\"js-list\">\n        <div>\n        <img src=\"".concat(svg, "\" alt=\"flag\" width=\"40\" class =\"js-img\">\n        </div>\n        <h1>").concat(official, "</h1>\n        </div>\n<ul>\n  <li class=\"js-item\">Capital:<span class =\"js-icon\">").concat(capital, "</span></li>\n  <li class=\"js-item\">Population:<span class =\"js-icon\">").concat(population, "</span></li>\n  <li class=\"js-item\">Languages:<span class =\"js-icon\">").concat(languagesKey, "</span></li>\n</ul>\n");
+  const markupList = dataList.map(({
+    name: {
+      official
+    },
+    capital,
+    population,
+    flags: {
+      svg
+    },
+    languages
+  }) => {
+    const languagesKey = Object.values(languages).join(',');
+    return `<div class ="js-list">
+        <div>
+        <img src="${svg}" alt="flag" width="40" class ="js-img">
+        </div>
+        <h1>${official}</h1>
+        </div>
+<ul>
+  <li class="js-item">Capital:<span class ="js-icon">${capital}</span></li>
+  <li class="js-item">Population:<span class ="js-icon">${population}</span></li>
+  <li class="js-item">Languages:<span class ="js-icon">${languagesKey}</span></li>
+</ul>
+`;
   }).join('');
   refs.list.innerHTML = '';
   refs.info.innerHTML = markupList;
 };
 
-var handleCountryInput = function handleCountryInput(e) {
-  var inputName = e.target.value.trim();
-  (0, _apiServices.default)(inputName).then(function (data) {
+const handleCountryInput = e => {
+  const inputName = e.target.value.trim();
+  (0, _apiServices.default)(inputName).then(data => {
     if (data.length > 10) {
-      _notiflix.default.Notify.info("Too many matches found. Please enter a more specific name.");
+      _notiflix.default.Notify.info(`Too many matches found. Please enter a more specific name.`);
 
       return;
     }
@@ -659,11 +683,11 @@ var handleCountryInput = function handleCountryInput(e) {
     } else {
       return false;
     }
-  }).catch(function (err) {
+  }).catch(err => {
     refs.info.innerHTML = '';
     refs.list.innerHTML = '';
 
-    _notiflix.default.Notify.failure("Oops, there is no country with that name");
+    _notiflix.default.Notify.failure(`Oops, there is no country with that name`);
   });
 };
 
@@ -696,7 +720,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51147" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49622" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
