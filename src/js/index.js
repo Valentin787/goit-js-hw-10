@@ -61,19 +61,20 @@ const handleCountryInput = e => {
         return;
       }
       if (data.length < 10 && data.length > 1) {
-        createUsersMarkupLi(data);
+         return createUsersMarkupLi(data);
       }
       if (data.length === 1) {
-        createMarkupList(data);
-      } else {
-        return false;
+        createMarkupList(data)
       }
-    })
+        )
     .catch(err => {
-      refs.info.innerHTML = '';
-      refs.list.innerHTML = '';
+      removeElem()
       notiflix.Notify.failure(`Oops, there is no country with that name`);
     });
 };
 
+function removeElem() {
+  refs.info.innerHTML = '';
+  refs.list.innerHTML = '';
+}
 refs.input.addEventListener('input', debounce(handleCountryInput, DEBOUNCE_DELAY));
